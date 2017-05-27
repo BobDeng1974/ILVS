@@ -1,0 +1,24 @@
+#stream to youtube 720p
+
+./gl_texture_mapping_try | ffmpeg -re \
+-f rawvideo -vcodec rawvideo -pixel_format bgr24 -video_size 1280x720 -framerate 10 -i - \
+-f lavfi -i anullsrc=r=44100:cl=mono \
+-deinterlace -vcodec libx264 -pixel_format yuv420p -preset medium -r 10 -g 20 -b:v 2500k \
+-acodec libfaac -ar 44100 \
+-f flv "rtmp://a.rtmp.youtube.com/live2/t5vr-2d96-wh61-fr4c"
+
+#stream to youtube 1080p
+
+./gl_texture_mapping_try | ffmpeg -re \
+-f rawvideo -vcodec rawvideo -pixel_format bgr24 -video_size 1920x1080 -framerate 10 -i - \
+-f lavfi -i anullsrc=r=44100:cl=mono \
+-deinterlace -vcodec libx264 -pixel_format yuv420p -preset medium -r 10 -g 20 -b:v 4500k \
+-acodec libfaac -ar 44100 \
+-f flv "rtmp://a.rtmp.youtube.com/live2/t5vr-2d96-wh61-fr4c"
+
+#stream to vlc throught rtp
+
+./gl_texture_mapping_try | ffmpeg -re \
+-f rawvideo -vcodec rawvideo -pixel_format bgr24 -video_size 1280x720 -framerate 10 -i - \
+-deinterlace -vcodec mpeg2video -r 10 -g 20 -b:v 2500k \
+-f rtp rtp://127.0.0.1:5555
